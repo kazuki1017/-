@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英語プリント総復習ノート</title>
+<style>
+  :root{
+    --paper:#FBF8F1;
+    --paper-line:#DCD3BF;
+    --ink:#2A2620;
+    --ink-soft:#6b6558;
+    --pen:#3A5AA8;
+    --pen-soft:#7C93C9;
+    --red:#C8422F;
+    --red-soft:#f3d8d1;
+    --green:#3C7A4C;
+    --green-soft:#dcecdd;
+    --hl1:#F4D35E; /* Jobs - yellow */
+    --hl2:#EE964B; /* Home - orange */
+    --hl3:#B8C77E; /* Happiness - olive */
+    --hl4:#7FB2C9; /* AmAus - blue */
+    --hl5:#C994C7; /* Argumentation - purple */
+    --hl6:#E0876E; /* Disaster/Travel - terracotta */
+    --hl7:#8FBFA3; /* Presentation - sage */
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    background-image:
+      linear-gradient(var(--paper-line) 1px, transparent 1px);
+    background-size: 100% 34px;
+    color:var(--ink);
+    font-family: "Hiragino Mincho ProN","Georgia", serif;
+    line-height:1.7;
+    padding-bottom:80px;
+  }
+  header{
+    padding:38px 20px 18px;
+    text-align:center;
+    border-bottom:3px solid var(--ink);
+    background:var(--paper);
+    position:relative;
+  }
+  header::before{
+    content:"REVIEW NOTEBOOK";
+    display:block;
+    font-family:"Courier New", monospace;
+    letter-spacing:4px;
+    font-size:11px;
+    color:var(--ink-soft);
+    margin-bottom:8px;
+  }
+  h1{
+    font-size:1.7rem;
+    margin:0 0 6px;
+    font-weight:700;
+  }
+  header p{
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    margin:0;
+  }
+
+  nav#tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:14px 12px;
+    background:var(--paper);
+    position:sticky;
+    top:0;
+    z-index:10;
+    border-bottom:1px solid var(--paper-line);
+    -webkit-overflow-scrolling:touch;
+  }
+  nav#tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    font-size:0.78rem;
+    font-weight:700;
+    padding:8px 12px;
+    border:2px solid var(--ink);
+    background:#fff;
+    border-radius:3px 3px 0 0;
+    cursor:pointer;
+    color:var(--ink);
+    white-space:nowrap;
+    transform:translateY(4px);
+    transition:transform .15s ease;
+  }
+  .tab-btn.active{
+    transform:translateY(0);
+    box-shadow: 0 3px 0 var(--ink);
+  }
+
+  main{max-width:720px;margin:0 auto;padding:0 16px;}
+  section.unit{display:none;padding-top:22px;}
+  section.unit.active{display:block;}
+
+  .unit-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:4px;
+  }
+  .unit-head .swatch{
+    width:14px;height:14px;border:2px solid var(--ink);flex:0 0 auto;
+  }
+  .unit-head h2{
+    font-size:1.25rem;
+    margin:0;
+  }
+  .unit-sub{
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    margin:0 0 18px 24px;
+  }
+
+  h3.block-title{
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    font-size:0.9rem;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:#fff;
+    display:inline-block;
+    padding:3px 10px;
+    margin:26px 0 14px;
+  }
+
+  /* vocab table */
+  .vocab-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:0;
+    border-top:1px solid var(--ink);
+    margin-bottom:10px;
+  }
+  .vocab-row{
+    display:grid;
+    grid-template-columns: 34% 1fr;
+    gap:10px;
+    padding:9px 4px;
+    border-bottom:1px dashed var(--paper-line);
+    font-size:0.92rem;
+  }
+  .vocab-row .term{
+    font-weight:700;
+    color:var(--pen);
+  }
+  .vocab-row .def{
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    font-size:0.83rem;
+    color:var(--ink);
+  }
+
+  /* quiz cards */
+  .qcard{
+    background:#fff;
+    border:1px solid var(--paper-line);
+    border-left:4px solid var(--ink);
+    border-radius:2px;
+    padding:16px 16px 14px;
+    margin-bottom:16px;
+    position:relative;
+  }
+  .qcard .qnum{
+    font-family:"Courier New",monospace;
+    font-size:0.72rem;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+    letter-spacing:1px;
+  }
+  .qcard .context{
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    margin-bottom:8px;
+    line-height:1.6;
+  }
+  .qcard .qtext{
+    font-size:1rem;
+    margin-bottom:12px;
+  }
+  .qcard .qtext .gap{
+    display:inline-block;
+    min-width:70px;
+    border-bottom:2px solid var(--ink);
+    text-align:center;
+    font-weight:700;
+    color:var(--pen);
+  }
+  .choices{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  @media (max-width:420px){
+    .choices{grid-template-columns:1fr;}
+  }
+  .choice-btn{
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    font-size:0.85rem;
+    text-align:left;
+    padding:9px 10px;
+    border:1.5px solid var(--ink);
+    background:#fff;
+    border-radius:3px;
+    cursor:pointer;
+    color:var(--ink);
+  }
+  .choice-btn:active{transform:translateY(1px);}
+  .choice-btn.correct{
+    background:var(--green-soft);
+    border-color:var(--green);
+    color:var(--green);
+    font-weight:700;
+  }
+  .choice-btn.wrong{
+    background:var(--red-soft);
+    border-color:var(--red);
+    color:var(--red);
+    text-decoration:line-through;
+  }
+  .choice-btn[disabled]{cursor:default;}
+  .feedback{
+    margin-top:10px;
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    font-size:0.8rem;
+    font-weight:700;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.ok{color:var(--green);}
+  .feedback.ng{color:var(--red);}
+
+  .score-bar{
+    position:sticky;
+    bottom:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    font-size:0.82rem;
+    padding:10px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:20px;
+    border-radius:3px;
+  }
+  .score-bar button{
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    border:none;
+    padding:6px 12px;
+    border-radius:3px;
+    font-size:0.78rem;
+    font-weight:700;
+    cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>英語プリント総復習ノート</h1>
+  <p>単語・イディオム一覧 + 全範囲4択問題</p>
+</header>
+
+<nav id="tabs"></nav>
+<main id="content"></main>
+
+<script>
+/* ============ DATA ============ */
+const UNITS = [
+{
+  id:"jobs", color:"var(--hl1)", title:"① Steve Jobs スピーチ", sub:"養子の話・すい臓がんの話",
+  vocab:[
+    ["commencement","a ceremony at which students formally receive their degrees(卒業式)"],
+    ["pop out","to come out suddenly or forcefully(突然生まれ出る)"],
+    ["unwed","relating to someone who has not been married(未婚の)"],
+    ["naively","in a manner showing a lack of experience or knowledge(世間知らずに)"],
+    ["relent","to give in to influence or pressure(態度を和らげる)"],
+    ["drop out","to leave or stop doing something before it is finished(中退する)"],
+    ["adoption","the process of taking a child into your care(養子縁組)"],
+    ["last minute","the latest possible moment(ぎりぎり、直前)"],
+    ["biological mother","mother related by blood(実の母)"],
+    ["figure something out","to find an answer or understand something(理解する)"],
+    ["intestine","the long tube food passes through after leaving the stomach(腸)"],
+    ["encounter","to experience something, especially problems(直面する、経験する)"],
+    ["cell","the smallest part of a living thing that can exist independently(細胞)"],
+    ["pancreas","a gland near the stomach that produces insulin(すい臓)"],
+    ["biopsy","removal of cells/tissue to examine a disease(生体組織検査)"],
+    ["endoscope","instrument with a camera used to see inside the body(内視鏡)"],
+    ["incurable","impossible to cure(不治の)"],
+    ["tumor","a mass of diseased cells that has grown too quickly(腫瘍)"],
+    ["diagnose","to identify what illness someone has(診断する)"],
+    ["button up","to fasten with buttons, or make sure everything is properly finished(きちんと締めくくる)"]
+  ],
+  blanks:[
+    {context:"卒業式で、スピーチを頼まれた場面の冒頭。",
+      before:"Thank you. I'm", after:"with you today for your commencement from one of the finest universities in the world.",
+      choices:["honored to be","forced to be","surprised to be","reluctant to be"], a:0},
+    {context:"実際には大学を卒業していないことを明かす場面。",
+      before:"Truth be told, I never graduated from college, and this is the closest I've", after:"a college graduation.",
+      choices:["ever gotten to","never seen","already had","popped out"], a:0},
+    {context:"今日話す3つの話について前置きする場面。",
+      before:"Today, I want to tell you three stories from my life. That's it.", after:"Just three stories.",
+      choices:["No big deal","A long story","Very important","Too much"], a:0},
+    {context:"1つ目の話のタイトルを紹介する場面。",
+      before:"The first story is about", after:".",
+      choices:["connecting the dots","dropping out","adoption","biopsy"], a:0},
+    {context:"リード大学中退の経緯。",
+      before:"I dropped out of Reed College after the first six months, but then stayed around as a", after:"for another 18 months or so before I really quit.",
+      choices:["drop-in","teacher","volunteer","graduate"], a:0},
+    {context:"生みの母親について。",
+      before:"My", after:"mother was a young, unwed graduate student and she decided to put me up for adoption.",
+      choices:["biological","adoptive","step","foster"], a:0},
+    {context:"生みの母親の状況について。",
+      before:"My biological mother was a young,", after:"graduate student and she decided to put me up for adoption.",
+      choices:["unwed","famous","wealthy","foreign"], a:0},
+    {context:"養子縁組の条件について。",
+      before:"So everything was all set for me to be adopted", after:"by a lawyer and his wife except that when I popped out, they decided at the last minute that they really wanted a girl.",
+      choices:["at birth","secretly","legally","quietly"], a:0},
+    {context:"生まれた瞬間について。",
+      before:"...except that when I", after:", they decided at the last minute that they really wanted a girl.",
+      choices:["popped out","grew up","was raised","cried out"], a:0},
+    {context:"養父母が本当に欲しがっていたものが分かった時期について。",
+      before:"they decided at the", after:"that they really wanted a girl.",
+      choices:["last minute","first day","next morning","following week"], a:0},
+    {context:"夜中にかかってきた電話の内容。",
+      before:"So my parents...got a call in the middle of the night asking, \"We've got an", after:"baby boy. Do you want him?\" They said, \"Of course.\"",
+      choices:["unexpected","abandoned","adopted","healthy"], a:0},
+    {context:"生みの母が署名を拒んだ書類について。",
+      before:"She refused to sign the final", after:".",
+      choices:["adoption papers","college degree","birth certificate","medical report"], a:0},
+    {context:"17年後、実際に大学へ進学したかどうか。",
+      before:"And 17 years later, I", after:"go to college.",
+      choices:["did","never","almost","barely"], a:0},
+    {context:"両親の貯金が使われていたものについて。",
+      before:"and all of my working-class parents' savings were being spent on my college", after:".",
+      choices:["tuition","car","house","medical bills"], a:0},
+    {context:"大学生活で何がしたいか分からなかった場面。",
+      before:"I", after:"what I wanted to do with my life and no idea how college was going to help me figure it out.",
+      choices:["had no idea","already knew","was told","forgot"], a:0},
+    {context:"最終的な決断について。",
+      before:"So I decided to", after:"and trust that it would all work out okay.",
+      choices:["drop out","stay in school","transfer","study harder"], a:0},
+    {context:"がんの診断結果について(すい臓がんの話)。",
+      before:"The doctors told me this was almost certainly a type of cancer that is", after:", and that I should expect to live no longer than three to six months.",
+      choices:["incurable","curable","rare","mild"], a:0},
+    {context:"検査でわかった腫瘍の場所について(すい臓がんの話)。",
+      before:"I had a scan at 7:30 in the morning, and it clearly showed a tumor on my", after:".",
+      choices:["pancreas","liver","lung","intestine"], a:0}
+  ]
+},
+{
+  id:"home", color:"var(--hl2)", title:"② Where is home?", sub:"アイデンティティに関するスピーチ",
+  vocab:[
+    ["insofar (as)","to the degree that(~という限りでは)"],
+    ["ancestry","the members of your family who lived long ago(祖先)"],
+    ["dialect","a form of a language spoken only in one area, slightly different from other forms(方言)"],
+    ["raise","to look after your children and help them grow(育てる)"],
+    ["permanent alien","a person continuously living in another country without its citizenship(永住外国人)"],
+    ["multiculture","involving people or ideas from many different countries, races or religions(多文化の)"]
+  ],
+  blanks:[
+    {context:"「どこ出身か」という質問について語り始める場面。",
+      before:"these days, of course, simple questions", after:"ever more complicated answers.",
+      choices:["bring","hide","avoid","reduce"], a:0},
+    {context:"周囲からインド出身だと思われている場面。",
+      before:"People are always asking me where I come from, and they're", after:"to say India,",
+      choices:["expecting me","forcing me","allowing me","forbidding me"], a:0},
+    {context:"血筋・祖先について。",
+      before:"insofar as", after:"percent of my blood and ancestry does come from India",
+      choices:["100","50","75","25"], a:0},
+    {context:"インドとのつながりの限界について。",
+      before:"come from India except", after:"one day of my life there.",
+      choices:["I've never lived","I have always lived","I was born","I once visited"], a:0},
+    {context:"インドの方言の多さについて。",
+      before:"I can't speak even one word of its more than", after:"dialects, so I don't think I've really earned the right to call myself an Indian.",
+      choices:["22,000","2,200","220","2,200,000"], a:0},
+    {context:"「どこ出身か」の別の解釈について。",
+      before:"And if \"Where do you come from?\" means \"Where", after:"and raised and educated?\"",
+      choices:["were you born","did you live","will you die","were you married"], a:0},
+    {context:"教育を受けた場所について。",
+      before:"means \"Where were you born and raised and", after:"?\"...then I'm entirely of that funny little country known as England,",
+      choices:["educated","punished","employed","ignored"], a:0},
+    {context:"出身国イギリスの紹介。",
+      before:"then I'm entirely of that funny little country", after:"England, except I left England as soon as I completed my undergraduate education,",
+      choices:["known as","located near","far from","similar to"], a:0},
+    {context:"イギリスを離れた時期について。",
+      before:"except I left England", after:"I completed my undergraduate education,",
+      choices:["as soon as","long after","before","without"], a:0},
+    {context:"教科書に出てくる典型的なイギリス人像との違い。",
+      before:"the only kid in all my classes who didn't begin to", after:"the classic English heroes represented in our textbooks.",
+      choices:["look like","sound like","behave like","dress like"], a:0},
+    {context:"税金や医療を受ける国について。",
+      before:"Where do you see your doctor and your", after:"?\" then I'm very much of the United States,",
+      choices:["dentist","lawyer","teacher","accountant"], a:0},
+    {context:"アメリカに住んでいる年数について。",
+      before:"and I have been for", after:"years now, since I was a really small child.",
+      choices:["48","25","30","60"], a:0},
+    {context:"永住外国人カードの模様について。",
+      before:"this funny little pink card, with", after:"lines running through my face, identifying me as a permanent alien.",
+      choices:["green","blue","red","yellow"], a:0},
+    {context:"「どこが自分の心に一番響くか」という問いについて。",
+      before:"\"Which place goes", after:"you, and where do you try to spend most of your time?\"",
+      choices:["deepest inside","the least to","only briefly to","nothing to"], a:0},
+    {context:"日本での生活について。",
+      before:"because I've been living", after:"I can for the last 25 years in Japan.",
+      choices:["as much as","less than","apart from","except for"], a:0},
+    {context:"多くの日本人がどう思うかについて。",
+      before:"not many Japanese would want to", after:"me one of them.",
+      choices:["consider","forget","expect","refuse"], a:0},
+    {context:"自分の背景の単純さを強調する場面。",
+      before:"just to stress how very", after:"and straightforward my background is,",
+      choices:["old-fashioned","modern","complicated","international"], a:0},
+    {context:"香港やシドニーの子どもたちの複数の「故郷」について。",
+      before:"they have one home associated with their parents, but", after:"associated with their partners, a third connected maybe with the place where they happen to be,",
+      choices:["another","no other","the same","only one"], a:0},
+    {context:"「故郷」とは何かについての結論。",
+      before:"Home for them is really a work", after:".",
+      choices:["in progress","of the past","without meaning","already finished"], a:0},
+    {context:"「故郷」の本質についての締めくくり(前半)。",
+      before:"home has really less to do with a piece of", after:"than you could say, with a piece of soul.",
+      choices:["soil","gold","stone","glass"], a:0},
+    {context:"「故郷」の本質についての締めくくり(後半)。",
+      before:"than you could say, with a piece of", after:".",
+      choices:["soul","land","paper","blood"], a:0}
+  ]
+},
+{
+  id:"happy", color:"var(--hl3)", title:"③ Happiness Advantage", sub:"TEDトーク(ハーバード大学)",
+  vocab:[
+    ["adolescent","being of the age 13 through 19(思春期の)"],
+    ["assumes","to place yourself in a particular position or posture(その立場をとる)"],
+    ["boarding school","a place where students can live during the term(寄宿学校)"],
+    ["downturn","a situation in which something decreases or becomes worse(下降、悪化)"],
+    ["illicit","not allowed by law(違法な)"],
+    ["parenting","to be or act as a mother or father to someone(子育て)"],
+    ["wellness","the state of being in good health(健康であること)"]
+  ],
+  blanks:[
+    {context:"ハーバードの新入生寮の食堂について。",
+      before:"This freshmen dining hall", after:"something out of Hogwarts from the movie \"Harry Potter,\" which it does.",
+      choices:["looks like","sounds like","feels like","smells like"], a:0},
+    {context:"友人にからかわれる場面。",
+      before:"Shawn, why do you", after:"studying happiness at Harvard?",
+      choices:["waste your time","spend money","forget about","worry so much"], a:0},
+    {context:"友人の質問の裏にある前提について。",
+      before:"Embedded within that question is the key to understanding", after:"in reality, because what that question assumes is that our external world is predictive of our happiness levels.",
+      choices:["the science of happiness","the history of Harvard","the rules of college","the cost of happiness"], a:0},
+    {context:"外的世界が幸福を予測できる割合について。",
+      before:"if I know everything about your external world, I can only predict", after:"of your long-term happiness.",
+      choices:["10%","30%","50%","70%"], a:0},
+    {context:"脳が果たす役割について。",
+      before:"", after:"percent of your long-term happiness is predicted not by the external world, but by the way your brain processes the world.",
+      choices:["90","60","40","20"], a:0},
+    {context:"仕事の成功とIQの関係について。",
+      before:"What we found is that only", after:"of job successes are predicted by IQ.",
+      choices:["25%","50%","75%","90%"], a:0},
+    {context:"寄宿学校のウェルネスウィークのスケジュールについて。",
+      before:"\"Tuesday night, it's school violence and", after:"coming in to speak about adolescent depression.\"",
+      choices:["bullying","eating disorders","drug use","risky sex"], a:0},
+    {context:"「健康」の本当の定義について。",
+      before:"", after:"disease is not health.",
+      choices:["The absence of","The cause of","The result of","The fear of"], a:0},
+    {context:"健康的な社会を作るために必要なことについて。",
+      before:"Here's how we get to health: we need to", after:"for happiness and success.",
+      choices:["reverse the formula","increase the budget","memorize the formula","ignore the formula"], a:0},
+    {context:"45か国での調査結果について。",
+      before:"And", after:"is that most companies and schools follow a formula for success, which is this, \"If I work harder, I'll be more successful.\"",
+      choices:["what I found","what I fear","what I doubt","what I forgot"], a:0},
+    {context:"成功と幸福の公式が科学的に間違っている理由について。",
+      before:"the problem is it's scientifically broken and", after:"for two reasons.",
+      choices:["backwards","perfect","flexible","modern"], a:0},
+    {context:"脳が成功にどう反応するかについて。",
+      before:"First, every time your brain has a success, you just", after:"of what success looked like.",
+      choices:["change the goalpost","lower your standards","forget your goal","celebrate longer"], a:0},
+    {context:"幸福と成功の位置関係について。",
+      before:"And if happiness is", after:"of success, your brain never gets there.",
+      choices:["on the opposite side","right next to","far beyond","completely outside"], a:0},
+    {context:"社会全体が幸福を遠ざけてしまったことについて。",
+      before:"", after:"is we've pushed happiness over the cognitive horizon as a society.",
+      choices:["What we've done","What we forgot","What we hoped","What we avoided"], a:0},
+    {context:"ポジティブさを高めることで得られる効果について。",
+      before:"If you can raise somebody's level of positivity", after:"then their brain experiences what we now call a \"happiness advantage\",",
+      choices:["in the present","in the past","by accident","only briefly"], a:0},
+    {context:"「幸福の優位性」がもたらす具体的な変化について。",
+      before:"Your intelligence", after:", your creativity rises, your energy levels rise.",
+      choices:["rises","falls","stays the same","disappears"], a:0}
+  ]
+},
+{
+  id:"amaus", color:"var(--hl4)", title:"④ American vs Australian English", sub:"米語と豪語の単語比較",
+  vocab:[
+    ["hood (米) / bonnet (豪)","car engine cover(ボンネット)"],
+    ["trunk (米) / boot (豪)","rear storage of a car(トランク)"],
+    ["gas station (米) / service station (豪)","fueling station(ガソリンスタンド)"],
+    ["grocery store (米) / supermarket (豪)","food shop(スーパー)"],
+    ["sidewalk (米) / footpath (豪)","paved path for walking(歩道)"],
+    ["soda (米) / soft drink (豪)","carbonated drink(ソフトドリンク)"],
+    ["shopping cart (米) / trolley (豪)","wheeled basket for shopping(カート)"],
+    ["cookie (米) / biscuit (豪)","sweet baked snack(クッキー)"],
+    ["biscuit (米) / scone (豪)","soft baked bread-like snack(ビスケット)"],
+    ["sweater (米) / jumper (豪)","knitted upper garment(セーター)"],
+    ["parking lot (米) / car park (豪)","place to park cars(駐車場)"]
+  ],
+  blanks:[
+    {context:"友人とスカイプで話した内容を紹介する場面。",
+      before:"So, yesterday I was", after:"Skype with a friend from New York.",
+      choices:["chatting on","typing on","calling from","browsing on"], a:0},
+    {context:"それぞれの国の言語について。",
+      before:"Every country has their", after:"language...",
+      choices:["own","foreign","official","secret"], a:0},
+    {context:"車のボンネットの呼び方について。",
+      before:"We don't call it a hood. We call it a", after:".",
+      choices:["bonnet","boot","hood","trolley"], a:0},
+    {context:"車のトランクの呼び方について。",
+      before:"We don't call it a trunk. We call it a", after:".",
+      choices:["boot","trunk","bonnet","cart"], a:0},
+    {context:"ガソリンスタンドの呼び方について。",
+      before:"You go to the gas station. We go to the", after:"station, which is odd...",
+      choices:["service","fuel","car","petrol"], a:0},
+    {context:"車の整備をしなくなった現状について。",
+      before:"because people don't really get their cars serviced there anymore", after:".",
+      choices:["anyway","already","instead","again"], a:0},
+    {context:"食料品店の呼び方について。",
+      before:"You go to the grocery store. We go to the", after:".",
+      choices:["supermarket","market","mall","store"], a:0},
+    {context:"歩道の呼び方について。",
+      before:"You walk down the sidewalk, we walk down the", after:".",
+      choices:["footpath","sidewalk","street","lane"], a:0},
+    {context:"駐車場の呼び方について。",
+      before:"You park in a", after:", we park in a car park.",
+      choices:["parking lot","garage","driveway","parking zone"], a:0},
+    {context:"セーターの呼び方について。",
+      before:"You wear a sweater, we call it a", after:".",
+      choices:["jumper","cardigan","hoodie","vest"], a:0},
+    {context:"ソフトドリンクの呼び方について。",
+      before:"You call it a", after:", we call it soft drink.",
+      choices:["soda","juice","cola","punch"], a:0},
+    {context:"買い物カートの呼び方について。",
+      before:"Oh, and then there's shopping cart, which we call a", after:".",
+      choices:["trolley","basket","bin","bag"], a:0},
+    {context:"クッキーの呼び方について。",
+      before:"Oh, and what you call a cookie, we call a", after:".",
+      choices:["biscuit","scone","cracker","bun"], a:0},
+    {context:"ビスケットの呼び方について(ややこしい部分)。",
+      before:"because what you call a biscuit is what we call a", after:", except we don't pronounce it \"scone\".",
+      choices:["scone","cookie","cracker","bun"], a:0},
+    {context:"scone の発音について。",
+      before:"We", after:"it \"scone\".",
+      choices:["pronounce","spell","write","translate"], a:0}
+  ]
+},
+{
+  id:"argument", color:"var(--hl5)", title:"⑤ Argumentation in Essays", sub:"論理構成に関する語彙",
+  vocab:[
+    ["argumentation","reasoning systematically to support a claim(論理構成・議論の展開)"],
+    ["applicable","relevant or appropriate to a particular situation(当てはまる)"],
+    ["persuasive","good at convincing someone to believe or do something(説得力のある)"],
+    ["claim","a statement asserting something, which may require support(主張)"],
+    ["evidence","facts or information showing whether a claim is true(証拠)"],
+    ["constitute","to be or form a part of something; to make up(構成する)"],
+    ["logical","following clear, reasonable thought(論理的な)"],
+    ["barometer","something that reflects or indicates change(指標、尺度)"],
+    ["illustration","an example that helps explain or clarify something(例示)"]
+  ],
+  blanks:[
+    {context:"エッセイにおける主張と証拠の関係についての説明。",
+      before:"an essay contains a claim, and that the claim contains", after:"reasons and supporting evidence.",
+      choices:["persuasive","illogical","optional","hidden"], a:0},
+    {context:"議論の信頼性についての説明。",
+      before:"The more reliable these are, the more", after:"the argument.",
+      choices:["persuasive","confusing","short","informal"], a:0},
+    {context:"主張の説得力を高める要素について。",
+      before:"an essay is to assert what it is that you want to say. When you get right down to it,", after:"it consists of a claim and reasons.",
+      choices:["writing","reading","listening","arguing"], a:1}
+  ]
+},
+{
+  id:"disaster", color:"var(--hl6)", title:"⑥ Disaster / Travel 単語", sub:"防災・ホテル関連フレーズ",
+  vocab:[
+    ["without warning","何の前触れもなく"],
+    ["earthquake hits","地震が起きる"],
+    ["in the middle of the night","深夜に"],
+    ["jump out of bed","ベッドから飛び出る"],
+    ["call out to","~に呼びかける"],
+    ["get to safety","避難する"],
+    ["run out of","~から走って出る"],
+    ["land on one's knee","膝から着地する"],
+    ["get out safely","安全に外に出る"],
+    ["stay calm","平静を保つ、冷静でいる"],
+    ["check in","チェックインする"],
+    ["send up a bellhop","ベルボーイを寄こす"],
+    ["complain (about)","苦情を言う"],
+    ["upgrade","(部屋などを)アップグレードする"],
+    ["enjoy one's stay","滞在を楽しむ"]
+  ],
+  blanks:[
+    {context:"地震で仕事を辞めた人についての例文。",
+      before:"The earthquake struck just after noon", after:".",
+      choices:["without any warning","with a loud warning","after a small warning","despite the warning"], a:0},
+    {context:"地震発生時の落ち着いた行動について。",
+      before:"I always tell my family to be calm during", after:".",
+      choices:["earthquakes","interviews","exams","parties"], a:0},
+    {context:"ホテルでの苦情についての例文。",
+      before:"I complained to her supervisor about her lazy", after:".",
+      choices:["co-worker","manual","schedule","luggage"], a:0}
+  ]
+},
+{
+  id:"presentation", color:"var(--hl7)", title:"⑦ プレゼンテーション表現", sub:"導入・展開・結論のフレーズ集",
+  vocab:[
+    ["I will show you how to ~","~の仕方をお見せします"],
+    ["I would like to talk to you about ~","~についてお話ししたいと思います"],
+    ["Let me begin my presentation by ~ing","~することでプレゼンを始めます"],
+    ["Now let us consider ~","では~を考えてみましょう"],
+    ["Previous studies show that ~","先行研究では~が示されている"],
+    ["in order to figure out ~","~を解明するために"],
+    ["be divided into three parts","3つの部分に分けられる"],
+    ["put simply / in other words","簡単に言うと / 言い換えると"],
+    ["the bottom line is that ~","要するに~ということだ"],
+    ["so-called ~","いわゆる~"],
+    ["as you can see here","ここに見られるように"],
+    ["in contrast / meanwhile","対照的に / 一方で"],
+    ["there is a difference between A and B","AとBの間には違いがある"],
+    ["it is likely that ~","~である可能性が高い"],
+    ["at first glance","一見したところ"],
+    ["as a result of ~ / consequently","~の結果として / その結果"],
+    ["I'm afraid that's all the time we have","恐れ入りますが時間になりました"],
+    ["let me summarize ~","~を要約させてください"],
+    ["thank you for your attention","ご清聴ありがとうございました"],
+    ["to wrap up / that concludes ~","締めくくると / これで~を終わります"]
+  ],
+  blanks:[
+    {context:"研究結果を紹介する導入部。",
+      before:"the researchers, using Nagoya University students, and got the", after:"same results.",
+      choices:["same results","opposite results","no results","different data"], a:0},
+    {context:"研究の目的を述べる場面。",
+      before:"in order to figure out whether the fear of humans had been observed as something", after:"in monkeys that had never seen a snake.",
+      choices:["instinctive","artificial","random","optional"], a:0},
+    {context:"プレゼンのまとめに入る場面。",
+      before:"I'm afraid that's all the time we have", after:", so, to wrap up, let me summarize the population in Japan.",
+      choices:["now","yesterday","before","already"], a:0}
+  ]
+}
+];
+
+/* ---- auto-generate one vocab question for EVERY vocabulary/idiom item ---- */
+function buildVocabQuestions(vocab){
+  const n = vocab.length;
+  return vocab.map(([term,def], i)=>{
+    const distractorIdx = [];
+    let step = 1;
+    while(distractorIdx.length < 3 && distractorIdx.length < n-1){
+      const idx = (i+step) % n;
+      if(idx !== i) distractorIdx.push(idx);
+      step++;
+    }
+    const correctPos = i % Math.min(4, distractorIdx.length+1);
+    const choices = [];
+    let dPtr = 0;
+    const total = distractorIdx.length + 1;
+    for(let pos = 0; pos < total; pos++){
+      if(pos === correctPos){ choices.push(def); }
+      else { choices.push(vocab[distractorIdx[dPtr]][1]); dPtr++; }
+    }
+    return {type:"vocab", q:`「${term}」の意味として最も適切なものは?`, choices, a:correctPos};
+  });
+}
+
+UNITS.forEach(u=>{
+  const blankQs = (u.blanks || []).map(b => ({ type:"blank", ...b }));
+  u.quiz = buildVocabQuestions(u.vocab).concat(blankQs);
+});
+
+/* ============ RENDER ============ */
+const tabsEl = document.getElementById('tabs');
+const content = document.getElementById('content');
+
+UNITS.forEach((u, idx)=>{
+  const btn = document.createElement('button');
+  btn.className = 'tab-btn' + (idx===0?' active':'');
+  btn.style.borderBottom = `4px solid ${u.color}`;
+  btn.textContent = u.title.replace(/^[①-⑩]\s*/,'').length>10 ? u.title.split(' ')[0] : u.title;
+  btn.dataset.target = u.id;
+  btn.addEventListener('click', ()=> showUnit(u.id));
+  tabsEl.appendChild(btn);
+
+  const sec = document.createElement('section');
+  sec.className = 'unit' + (idx===0?' active':'');
+  sec.id = 'unit-'+u.id;
+
+  let html = `
+    <div class="unit-head"><div class="swatch" style="background:${u.color}"></div><h2>${u.title}</h2></div>
+    <p class="unit-sub">${u.sub}</p>
+    <h3 class="block-title" style="background:${u.color}">単語・イディオム</h3>
+    <div class="vocab-grid">`;
+  u.vocab.forEach(([term,def])=>{
+    html += `<div class="vocab-row"><div class="term">${term}</div><div class="def">${def}</div></div>`;
+  });
+  html += `</div>
+    <h3 class="block-title" style="background:${u.color}">4択問題</h3>
+    <div class="quizzes" data-unit="${u.id}"></div>
+    <div class="score-bar">
+      <span class="score-label" data-unit-score="${u.id}">正解 0 / ${u.quiz.length}</span>
+      <button class="reset-btn" data-unit-reset="${u.id}">やり直す</button>
+    </div>`;
+  sec.innerHTML = html;
+  content.appendChild(sec);
+
+  renderQuiz(u);
+});
+
+function renderQuiz(u){
+  const container = document.querySelector(`.quizzes[data-unit="${u.id}"]`);
+  container.innerHTML = '';
+  u.quiz.forEach((item, i)=>{
+    const card = document.createElement('div');
+    card.className = 'qcard';
+    let qHtml = `<div class="qnum">Q${i+1} / ${u.quiz.length}</div>`;
+    if(item.type === 'blank'){
+      qHtml += `<div class="context">${item.context}</div>
+        <div class="qtext">${item.before} <span class="gap">___</span> ${item.after}</div>`;
+    } else {
+      qHtml += `<div class="qtext">${item.q}</div>`;
+    }
+    qHtml += `<div class="choices"></div><div class="feedback"></div>`;
+    card.innerHTML = qHtml;
+    const choicesEl = card.querySelector('.choices');
+    const feedbackEl = card.querySelector('.feedback');
+    item.choices.forEach((c, ci)=>{
+      const cb = document.createElement('button');
+      cb.className = 'choice-btn';
+      cb.textContent = c;
+      cb.addEventListener('click', ()=>{
+        if(cb.disabled) return;
+        const allBtns = choicesEl.querySelectorAll('.choice-btn');
+        allBtns.forEach(b=> b.disabled = true);
+        if(ci === item.a){
+          cb.classList.add('correct');
+          feedbackEl.textContent = '○ 正解!';
+          feedbackEl.className = 'feedback show ok';
+          bumpScore(u.id, true);
+        } else {
+          cb.classList.add('wrong');
+          allBtns[item.a].classList.add('correct');
+          feedbackEl.textContent = '× 不正解。正解は「' + item.choices[item.a] + '」';
+          feedbackEl.className = 'feedback show ng';
+          bumpScore(u.id, false);
+        }
+      });
+      choicesEl.appendChild(cb);
+    });
+    container.appendChild(card);
+  });
+}
+
+const scores = {};
+UNITS.forEach(u=> scores[u.id] = {correct:0, answered:0});
+
+function bumpScore(id, correct){
+  scores[id].answered++;
+  if(correct) scores[id].correct++;
+  const label = document.querySelector(`[data-unit-score="${id}"]`);
+  const total = UNITS.find(u=>u.id===id).quiz.length;
+  label.textContent = `正解 ${scores[id].correct} / ${total}`;
+}
+
+document.addEventListener('click', (e)=>{
+  if(e.target.matches('[data-unit-reset]')){
+    const id = e.target.dataset.unitReset;
+    scores[id] = {correct:0, answered:0};
+    const u = UNITS.find(u=>u.id===id);
+    document.querySelector(`[data-unit-score="${id}"]`).textContent = `正解 0 / ${u.quiz.length}`;
+    renderQuiz(u);
+  }
+});
+
+function showUnit(id){
+  document.querySelectorAll('section.unit').forEach(s=> s.classList.toggle('active', s.id === 'unit-'+id));
+  document.querySelectorAll('.tab-btn').forEach(b=> b.classList.toggle('active', b.dataset.target === id));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
